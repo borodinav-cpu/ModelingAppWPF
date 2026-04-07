@@ -1,0 +1,352 @@
+﻿<Window x:Class="ModelingAppWPF.PrimitiveDialog"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        Title="Добавление примитива" 
+        Height="500" Width="600"
+        WindowStartupLocation="CenterOwner"
+        Background="#2B2B2B"
+        ResizeMode="NoResize">
+
+    <Grid Margin="15">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="Auto"/>
+        </Grid.RowDefinitions>
+
+        
+        <TextBlock Grid.Row="0" 
+                   Text="Выберите тип примитива и настройте параметры" 
+                   FontSize="16" 
+                   FontWeight="Bold"
+                   Foreground="White" 
+                   Margin="0,0,0,15"/>
+
+        
+        <Grid Grid.Row="1">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="200"/>
+                <ColumnDefinition Width="*"/>
+            </Grid.ColumnDefinitions>
+
+            
+            <Border Grid.Column="0" 
+                    Background="#3C3F41" 
+                    CornerRadius="5" 
+                    Margin="0,0,10,0">
+                <ListBox x:Name="PrimitiveListBox" 
+                         Background="Transparent" 
+                         Foreground="White"
+                         BorderThickness="0"
+                         SelectionChanged="PrimitiveListBox_SelectionChanged">
+                    <ListBoxItem Tag="Cube" Content=" Куб" Padding="10"/>
+                    <ListBoxItem Tag="Sphere" Content=" Сфера" Padding="10"/>
+                    <ListBoxItem Tag="Cylinder" Content=" Цилиндр" Padding="10"/>
+                    <ListBoxItem Tag="Cone" Content=" Конус" Padding="10"/>
+                    <ListBoxItem Tag="Torus" Content=" Тор" Padding="10"/>
+                    <ListBoxItem Tag="Pyramid" Content=" Пирамида" Padding="10"/>
+                    <ListBoxItem Tag="Ellipsoid" Content=" Эллипсоид" Padding="10"/>
+                    <ListBoxItem Tag="Pipe" Content="Труба" Padding="10"/>
+                </ListBox>
+            </Border>
+
+            
+            <Border Grid.Column="1" 
+                    Background="#3C3F41" 
+                    CornerRadius="5"
+                    Padding="15">
+                <ScrollViewer VerticalScrollBarVisibility="Auto">
+                    <StackPanel x:Name="ParametersPanel">
+                        <TextBlock Text="Параметры" 
+                                   Foreground="White" 
+                                   FontSize="14" 
+                                   FontWeight="Bold"
+                                   Margin="0,0,0,15"/>
+
+                        
+                        <TextBlock Text="Позиция:" 
+                                   Foreground="#AAAAAA" 
+                                   Margin="0,0,0,5"/>
+                        <Grid Margin="0,0,0,10">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="Auto"/>
+                                <ColumnDefinition Width="*"/>
+                            </Grid.ColumnDefinitions>
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="Auto"/>
+                                <RowDefinition Height="Auto"/>
+                                <RowDefinition Height="Auto"/>
+                            </Grid.RowDefinitions>
+
+                            <TextBlock Grid.Row="0" Grid.Column="0" Text="X:" 
+                                       Foreground="White" Margin="0,2,10,2" Width="20"/>
+                            <TextBox Grid.Row="0" Grid.Column="1" x:Name="PosXTextBox" 
+                                     Text="0" Background="#2B2B2B" Foreground="White" 
+                                     BorderBrush="#555555" Margin="2" Padding="3"/>
+
+                            <TextBlock Grid.Row="1" Grid.Column="0" Text="Y:" 
+                                       Foreground="White" Margin="0,2,10,2" Width="20"/>
+                            <TextBox Grid.Row="1" Grid.Column="1" x:Name="PosYTextBox" 
+                                     Text="10" Background="#2B2B2B" Foreground="White" 
+                                     BorderBrush="#555555" Margin="2" Padding="3"/>
+
+                            <TextBlock Grid.Row="2" Grid.Column="0" Text="Z:" 
+                                       Foreground="White" Margin="0,2,10,2" Width="20"/>
+                            <TextBox Grid.Row="2" Grid.Column="1" x:Name="PosZTextBox" 
+                                     Text="0" Background="#2B2B2B" Foreground="White" 
+                                     BorderBrush="#555555" Margin="2" Padding="3"/>
+                        </Grid>
+
+                        
+                        <StackPanel x:Name="SizeParameters">
+                            <TextBlock Text="Размеры:" 
+                                       Foreground="#AAAAAA" 
+                                       Margin="0,10,0,5"/>
+
+                            
+                            <Grid x:Name="CubeSizePanel" Margin="0,0,0,10">
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="Auto"/>
+                                    <ColumnDefinition Width="*"/>
+                                </Grid.ColumnDefinitions>
+                                <Grid.RowDefinitions>
+                                    <RowDefinition Height="Auto"/>
+                                </Grid.RowDefinitions>
+
+                                <TextBlock Grid.Row="0" Grid.Column="0" Text="Длина стороны:" 
+                                           Foreground="White" Margin="0,2,10,2"/>
+                                <TextBox Grid.Row="0" Grid.Column="1" x:Name="CubeSideTextBox" 
+                                         Text="20" Background="#2B2B2B" Foreground="White" 
+                                         BorderBrush="#555555" Margin="2" Padding="3"/>
+                            </Grid>
+
+                            
+                            <Grid x:Name="SphereSizePanel" Margin="0,0,0,10" Visibility="Collapsed">
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="Auto"/>
+                                    <ColumnDefinition Width="*"/>
+                                </Grid.ColumnDefinitions>
+                                <TextBlock Grid.Column="0" Text="Радиус:" 
+                                           Foreground="White" Margin="0,2,10,2"/>
+                                <TextBox Grid.Column="1" x:Name="SphereRadiusTextBox" 
+                                         Text="10" Background="#2B2B2B" Foreground="White" 
+                                         BorderBrush="#555555" Margin="2" Padding="3"/>
+                            </Grid>
+
+                            
+                            <Grid x:Name="CylinderSizePanel" Margin="0,0,0,10" Visibility="Collapsed">
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="Auto"/>
+                                    <ColumnDefinition Width="*"/>
+                                </Grid.ColumnDefinitions>
+                                <Grid.RowDefinitions>
+                                    <RowDefinition Height="Auto"/>
+                                    <RowDefinition Height="Auto"/>
+                                </Grid.RowDefinitions>
+
+                                <TextBlock Grid.Row="0" Grid.Column="0" Text="Диаметр:" 
+                                           Foreground="White" Margin="0,2,10,2"/>
+                                <TextBox Grid.Row="0" Grid.Column="1" x:Name="CylinderDiameterTextBox" 
+                                         Text="16" Background="#2B2B2B" Foreground="White" 
+                                         BorderBrush="#555555" Margin="2" Padding="3"/>
+
+                                <TextBlock Grid.Row="1" Grid.Column="0" Text="Высота:" 
+                                           Foreground="White" Margin="0,2,10,2"/>
+                                <TextBox Grid.Row="1" Grid.Column="1" x:Name="CylinderHeightTextBox" 
+                                         Text="20" Background="#2B2B2B" Foreground="White" 
+                                         BorderBrush="#555555" Margin="2" Padding="3"/>
+                            </Grid>
+
+                            
+                            <Grid x:Name="ConeSizePanel" Margin="0,0,0,10" Visibility="Collapsed">
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="Auto"/>
+                                    <ColumnDefinition Width="*"/>
+                                </Grid.ColumnDefinitions>
+                                <Grid.RowDefinitions>
+                                    <RowDefinition Height="Auto"/>
+                                    <RowDefinition Height="Auto"/>
+                                    <RowDefinition Height="Auto"/>
+                                </Grid.RowDefinitions>
+
+                                <TextBlock Grid.Row="0" Grid.Column="0" Text="Радиус основания:" 
+                                           Foreground="White" Margin="0,2,10,2"/>
+                                <TextBox Grid.Row="0" Grid.Column="1" x:Name="ConeBaseRadiusTextBox" 
+                                         Text="10" Background="#2B2B2B" Foreground="White" 
+                                         BorderBrush="#555555" Margin="2" Padding="3"/>
+
+                                <TextBlock Grid.Row="1" Grid.Column="0" Text="Высота:" 
+                                           Foreground="White" Margin="0,2,10,2"/>
+                                <TextBox Grid.Row="1" Grid.Column="1" x:Name="ConeHeightTextBox" 
+                                         Text="20" Background="#2B2B2B" Foreground="White" 
+                                         BorderBrush="#555555" Margin="2" Padding="3"/>
+
+                                <TextBlock Grid.Row="2" Grid.Column="0" Text="Радиус вершины:" 
+                                           Foreground="White" Margin="0,2,10,2"/>
+                                <TextBox Grid.Row="2" Grid.Column="1" x:Name="ConeTopRadiusTextBox" 
+                                         Text="0" Background="#2B2B2B" Foreground="White" 
+                                         BorderBrush="#555555" Margin="2" Padding="3"/>
+                            </Grid>
+
+                            
+                            <Grid x:Name="TorusSizePanel" Margin="0,0,0,10" Visibility="Collapsed">
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="Auto"/>
+                                    <ColumnDefinition Width="*"/>
+                                </Grid.ColumnDefinitions>
+                                <Grid.RowDefinitions>
+                                    <RowDefinition Height="Auto"/>
+                                    <RowDefinition Height="Auto"/>
+                                </Grid.RowDefinitions>
+
+                                <TextBlock Grid.Row="0" Grid.Column="0" Text="Диаметр тора:" 
+                                           Foreground="White" Margin="0,2,10,2"/>
+                                <TextBox Grid.Row="0" Grid.Column="1" x:Name="TorusDiameterTextBox" 
+                                         Text="30" Background="#2B2B2B" Foreground="White" 
+                                         BorderBrush="#555555" Margin="2" Padding="3"/>
+
+                                <TextBlock Grid.Row="1" Grid.Column="0" Text="Толщина трубы:" 
+                                           Foreground="White" Margin="0,2,10,2"/>
+                                <TextBox Grid.Row="1" Grid.Column="1" x:Name="TorusTubeDiameterTextBox" 
+                                         Text="8" Background="#2B2B2B" Foreground="White" 
+                                         BorderBrush="#555555" Margin="2" Padding="3"/>
+                            </Grid>
+
+                            
+                            <Grid x:Name="PyramidSizePanel" Margin="0,0,0,10" Visibility="Collapsed">
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="Auto"/>
+                                    <ColumnDefinition Width="*"/>
+                                </Grid.ColumnDefinitions>
+                                <Grid.RowDefinitions>
+                                    <RowDefinition Height="Auto"/>
+                                    <RowDefinition Height="Auto"/>
+                                </Grid.RowDefinitions>
+
+                                <TextBlock Grid.Row="0" Grid.Column="0" Text="Длина стороны:" 
+                                           Foreground="White" Margin="0,2,10,2"/>
+                                <TextBox Grid.Row="0" Grid.Column="1" x:Name="PyramidSideTextBox" 
+                                         Text="20" Background="#2B2B2B" Foreground="White" 
+                                         BorderBrush="#555555" Margin="2" Padding="3"/>
+
+                                <TextBlock Grid.Row="1" Grid.Column="0" Text="Высота:" 
+                                           Foreground="White" Margin="0,2,10,2"/>
+                                <TextBox Grid.Row="1" Grid.Column="1" x:Name="PyramidHeightTextBox" 
+                                         Text="25" Background="#2B2B2B" Foreground="White" 
+                                         BorderBrush="#555555" Margin="2" Padding="3"/>
+                            </Grid>
+
+                            
+                            <Grid x:Name="EllipsoidSizePanel" Margin="0,0,0,10" Visibility="Collapsed">
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="Auto"/>
+                                    <ColumnDefinition Width="*"/>
+                                </Grid.ColumnDefinitions>
+                                <Grid.RowDefinitions>
+                                    <RowDefinition Height="Auto"/>
+                                    <RowDefinition Height="Auto"/>
+                                    <RowDefinition Height="Auto"/>
+                                </Grid.RowDefinitions>
+
+                                <TextBlock Grid.Row="0" Grid.Column="0" Text="Радиус X:" 
+                                           Foreground="White" Margin="0,2,10,2"/>
+                                <TextBox Grid.Row="0" Grid.Column="1" x:Name="EllipsoidRadiusXTextBox" 
+                                         Text="15" Background="#2B2B2B" Foreground="White" 
+                                         BorderBrush="#555555" Margin="2" Padding="3"/>
+
+                                <TextBlock Grid.Row="1" Grid.Column="0" Text="Радиус Y:" 
+                                           Foreground="White" Margin="0,2,10,2"/>
+                                <TextBox Grid.Row="1" Grid.Column="1" x:Name="EllipsoidRadiusYTextBox" 
+                                         Text="10" Background="#2B2B2B" Foreground="White" 
+                                         BorderBrush="#555555" Margin="2" Padding="3"/>
+
+                                <TextBlock Grid.Row="2" Grid.Column="0" Text="Радиус Z:" 
+                                           Foreground="White" Margin="0,2,10,2"/>
+                                <TextBox Grid.Row="2" Grid.Column="1" x:Name="EllipsoidRadiusZTextBox" 
+                                         Text="10" Background="#2B2B2B" Foreground="White" 
+                                         BorderBrush="#555555" Margin="2" Padding="3"/>
+                            </Grid>
+
+                            
+                            <Grid x:Name="PipeSizePanel" Margin="0,0,0,10" Visibility="Collapsed">
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="Auto"/>
+                                    <ColumnDefinition Width="*"/>
+                                </Grid.ColumnDefinitions>
+                                <Grid.RowDefinitions>
+                                    <RowDefinition Height="Auto"/>
+                                    <RowDefinition Height="Auto"/>
+                                    <RowDefinition Height="Auto"/>
+                                </Grid.RowDefinitions>
+
+                                <TextBlock Grid.Row="0" Grid.Column="0" Text="Внешний диаметр:" 
+                                           Foreground="White" Margin="0,2,10,2"/>
+                                <TextBox Grid.Row="0" Grid.Column="1" x:Name="PipeOuterDiameterTextBox" 
+                                         Text="16" Background="#2B2B2B" Foreground="White" 
+                                         BorderBrush="#555555" Margin="2" Padding="3"/>
+
+                                <TextBlock Grid.Row="1" Grid.Column="0" Text="Внутренний диаметр:" 
+                                           Foreground="White" Margin="0,2,10,2"/>
+                                <TextBox Grid.Row="1" Grid.Column="1" x:Name="PipeInnerDiameterTextBox" 
+                                         Text="12" Background="#2B2B2B" Foreground="White" 
+                                         BorderBrush="#555555" Margin="2" Padding="3"/>
+
+                                <TextBlock Grid.Row="2" Grid.Column="0" Text="Длина:" 
+                                           Foreground="White" Margin="0,2,10,2"/>
+                                <TextBox Grid.Row="2" Grid.Column="1" x:Name="PipeLengthTextBox" 
+                                         Text="30" Background="#2B2B2B" Foreground="White" 
+                                         BorderBrush="#555555" Margin="2" Padding="3"/>
+                            </Grid>
+                        </StackPanel>
+
+                        
+                        <TextBlock Text="Цвет:" 
+                                   Foreground="#AAAAAA" 
+                                   Margin="0,10,0,5"/>
+                        <ComboBox x:Name="ColorComboBox" 
+                                  Background="#2B2B2B" 
+                                  Foreground="Black"
+                                  BorderBrush="#555555"
+                                  Margin="0,2"
+                                  SelectedIndex="0">
+                            <ComboBoxItem Content="Синий" Tag="Blue"/>
+                            <ComboBoxItem Content="Красный" Tag="Red"/>
+                            <ComboBoxItem Content="Зелёный" Tag="Green"/>
+                            <ComboBoxItem Content="Оранжевый" Tag="Orange"/>
+                            <ComboBoxItem Content="Жёлтый" Tag="Yellow"/>
+                            <ComboBoxItem Content="Фиолетовый" Tag="Purple"/>
+                            <ComboBoxItem Content="Белый" Tag="White"/>
+                            <ComboBoxItem Content="Чёрный" Tag="Black"/>
+                            <ComboBoxItem Content="Серый" Tag="Gray"/>
+                            <ComboBoxItem Content="Cветло-серый" Tag="Silver"/>
+                        </ComboBox>
+                    </StackPanel>
+                </ScrollViewer>
+            </Border>
+        </Grid>
+
+        
+        <StackPanel Grid.Row="2" 
+                    Orientation="Horizontal" 
+                    HorizontalAlignment="Right" 
+                    Margin="0,15,0,0">
+            <Button Content="OK" 
+                    Click="Ok_Click" 
+                    Padding="20,8" 
+                    Margin="0,0,10,0"
+                    Background="#3B82F6" 
+                    Foreground="White"
+                    BorderThickness="0"
+                    FontSize="12"
+                    Cursor="Hand"/>
+            <Button Content="Отмена" 
+                    Click="Cancel_Click" 
+                    Padding="20,8"
+                    Background="#555555" 
+                    Foreground="White"
+                    BorderThickness="0"
+                    FontSize="12"
+                    Cursor="Hand"/>
+        </StackPanel>
+    </Grid>
+</Window>
