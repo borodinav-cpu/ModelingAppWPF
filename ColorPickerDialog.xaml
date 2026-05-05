@@ -119,11 +119,11 @@
             <TextBlock Text="Быстрые цвета" Foreground="#666" FontSize="10"
                        Margin="0,16,0,6"/>
             <WrapPanel x:Name="Swatches">
-                <!-- Filled in code-behind -->
+               
             </WrapPanel>
         </StackPanel>
 
-        <!-- Buttons -->
+        
         <StackPanel Grid.Row="2" Orientation="Horizontal" HorizontalAlignment="Right" Margin="0,12,0,0">
             <Button Style="{StaticResource Btn}" Margin="0,0,8,0" Click="Cancel_Click">Отмена</Button>
             <Button Style="{StaticResource Btn}" Background="#1D4ED8" BorderBrush="#2563EB"

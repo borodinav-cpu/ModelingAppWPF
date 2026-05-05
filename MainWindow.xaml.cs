@@ -9,7 +9,7 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Media.Media3D;
 
-// Явные алиасы чтобы избежать конфликта CS0104
+
 using WpfColor       = System.Windows.Media.Color;
 using WpfColors      = System.Windows.Media.Colors;
 using WpfMessageBox  = System.Windows.MessageBox;
@@ -18,9 +18,7 @@ using WpfButton      = System.Windows.Controls.Button;
 
 namespace ModelingAppWPF
 {
-    // =========================================================
-    //  Модель объекта сцены (для дерева)
-    // =========================================================
+   
     public class SceneObject : INotifyPropertyChanged
     {
         private string?  _name;
@@ -28,12 +26,12 @@ namespace ModelingAppWPF
         private string?  _primitiveType;
         private Visual3D? _visual;
 
-        // Трансформации
+      
         public double PosX, PosY, PosZ;
         public double RotX, RotY, RotZ;
         public double ScaleX = 1, ScaleY = 1, ScaleZ = 1;
 
-        // Материал
+        
         public WpfColor DiffuseColor { get; set; } = WpfColors.CornflowerBlue;
         public double   Opacity      { get; set; } = 1.0;
         public string?  TexturePath  { get; set; } = null;
@@ -72,7 +70,7 @@ namespace ModelingAppWPF
             set { _visual = value; OnPropertyChanged(); }
         }
 
-        // Вычисляемые свойства для биндинга
+       
         public string Icon => PrimitiveType switch
         {
             "Cube"      => "⬛",
@@ -97,9 +95,7 @@ namespace ModelingAppWPF
             => PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(p));
     }
 
-    // =========================================================
-    //  Code-behind главного окна
-    // =========================================================
+   
     public partial class MainWindow : Window
     {
         private readonly ObservableCollection<SceneObject> _sceneObjects = new();
@@ -113,7 +109,7 @@ namespace ModelingAppWPF
             UpdateStatus();
         }
 
-        // ── Вспомогательные ────────────────────────────────────
+        
 
         private string NextName(string type)
         {
@@ -154,7 +150,7 @@ namespace ModelingAppWPF
             ScaleZBox.Text     = obj.ScaleZ.ToString("F2");
             StatusSelected.Text = $"Выбрано: {obj.Name}";
 
-            // Синхронизируем панель материала
+           
             var c = obj.DiffuseColor;
             ColorSwatch.Background = new SolidColorBrush(c);
             ColorHexLabel.Text     = $"#{c.R:X2}{c.G:X2}{c.B:X2}";
@@ -217,7 +213,7 @@ namespace ModelingAppWPF
                 PosX = px, PosY = py, PosZ = pz,
                 DiffuseColor  = color
             };
-            obj.Name = NextName(type);  // after PrimitiveType is set
+            obj.Name = NextName(type);  
             _sceneObjects.Add(obj);
             Viewport3D.Children.Add(visual);
             SceneTreeList.SelectedItem = obj;
@@ -239,7 +235,7 @@ namespace ModelingAppWPF
             }
         }
 
-        // ── Добавление примитива ────────────────────────────────
+        
 
         private void AddPrimitive_Click(object sender, RoutedEventArgs e)
         {
@@ -373,7 +369,7 @@ namespace ModelingAppWPF
             }
         }
 
-        // ── Дерево сцены ───────────────────────────────────────
+       
 
         private void SceneTree_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
@@ -393,12 +389,11 @@ namespace ModelingAppWPF
                 _selectedObject.Name = ObjNameBox.Text;
         }
 
-        // ── Панель материала ───────────────────────────────────
+       
 
         private void ColorSwatch_Click(object sender, System.Windows.Input.MouseButtonEventArgs e)
         {
-            // Используем стандартный WPF ColorDialog из HelixToolkit или Windows ColorPicker
-            // Простой способ без конфликта — открыть кастомный диалог
+           
             var dlg = new ColorPickerDialog(_selectedObject?.DiffuseColor ?? WpfColors.CornflowerBlue)
             {
                 Owner = this
@@ -474,7 +469,7 @@ namespace ModelingAppWPF
             }
         }
 
-        // ── Вращение ───────────────────────────────────────────
+       
 
         private void RotateX_Click(object sender, RoutedEventArgs e) => RotateSelected("X");
         private void RotateY_Click(object sender, RoutedEventArgs e) => RotateSelected("Y");
@@ -502,7 +497,7 @@ namespace ModelingAppWPF
             };
             var rot3D = new AxisAngleRotation3D(rotAxis, angle);
 
-            // Получить или создать Transform3DGroup
+           
             Transform3DGroup tg;
             if (_selectedObject.Visual.Transform is Transform3DGroup existing)
             {
@@ -526,7 +521,7 @@ namespace ModelingAppWPF
             SelectObject(_selectedObject);
         }
 
-        // ── Масштаб ────────────────────────────────────────────
+        
 
         private void ScaleUp_Click(object sender, RoutedEventArgs e)   => ScaleSelected(1.25);
         private void ScaleDown_Click(object sender, RoutedEventArgs e) => ScaleSelected(0.8);
@@ -562,7 +557,7 @@ namespace ModelingAppWPF
             SelectObject(_selectedObject);
         }
 
-        // ── Удаление ───────────────────────────────────────────
+        
 
         private void DeleteSelected_Click(object sender, RoutedEventArgs e)
         {
@@ -586,7 +581,7 @@ namespace ModelingAppWPF
             UpdateStatus();
         }
 
-        // ── Импорт ─────────────────────────────────────────────
+        
 
         private void ImportModel_Click(object sender, RoutedEventArgs e)
         {
@@ -604,7 +599,7 @@ namespace ModelingAppWPF
                 var visual = new ModelVisual3D { Content = model };
 
                 RegisterObject(visual, "Import", 0, 0, 0, WpfColors.Gray);
-                // Переименовать в имя файла
+              
                 if (_sceneObjects.Count > 0)
                 {
                     _sceneObjects[^1].Name =
@@ -619,15 +614,15 @@ namespace ModelingAppWPF
             }
         }
 
-        // ── Камера ─────────────────────────────────────────────
+       
 
         private void ResetCamera_Click(object sender, RoutedEventArgs e)
         {
-            // ZoomExtents — метод расширения из HelixToolkit
+            
             Viewport3D.ZoomExtents(500);
         }
 
-        // ── Вид ────────────────────────────────────────────────
+       
 
         private void MenuPerspective_Click(object sender, RoutedEventArgs e)
             => ViewportLabel.Text = "Перспектива | Затенение";
@@ -640,7 +635,7 @@ namespace ModelingAppWPF
                 : "Перспектива | Каркас";
         }
 
-        // ── Файловое меню ──────────────────────────────────────
+        
 
         private void MenuNew_Click(object sender, RoutedEventArgs e)
         {
