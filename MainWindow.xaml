@@ -6,7 +6,8 @@
         Title="ModelingApp" 
         Height="780" Width="1400"
         MinHeight="600" MinWidth="1000"
-        Background="#1A1A1A">
+        Background="#1A1A1A"
+        PreviewKeyDown="Window_PreviewKeyDown">
 
     <Window.Resources>
         <!-- ======= COLORS ======= -->
@@ -218,13 +219,13 @@
         <Border Grid.Row="0" Background="#242424" BorderBrush="#111" BorderThickness="0,0,0,1">
             <Menu Background="Transparent" VerticalAlignment="Center" Margin="4,0">
                 <MenuItem Header="Файл" Style="{StaticResource MenuItemStyle}">
-                    <MenuItem Header="Новый" Click="MenuNew_Click"/>
-                    <MenuItem Header="Открыть..." Click="MenuOpen_Click"/>
+                    <MenuItem Header="Новый" Command="{Binding DataContext.NewProjectCommand, RelativeSource={RelativeSource AncestorType=Window}}"/>
+                    <MenuItem Header="Открыть..." Command="{Binding DataContext.OpenProjectCommand, RelativeSource={RelativeSource AncestorType=Window}}"/>
                     <Separator/>
-                    <MenuItem Header="Сохранить" Click="MenuSave_Click"/>
-                    <MenuItem Header="Сохранить как..."/>
+                    <MenuItem Header="Сохранить" Command="{Binding DataContext.SaveProjectCommand, RelativeSource={RelativeSource AncestorType=Window}}"/>
+                    <MenuItem Header="Сохранить как..." Command="{Binding DataContext.SaveProjectAsCommand, RelativeSource={RelativeSource AncestorType=Window}}"/>
                     <Separator/>
-                    <MenuItem Header="Импорт модели..." Click="ImportModel_Click"/>
+                    <MenuItem Header="Импорт модели..." Command="{Binding DataContext.ImportModelCommand, RelativeSource={RelativeSource AncestorType=Window}}"/>
                     <Separator/>
                     <MenuItem Header="Выход" Click="MenuExit_Click"/>
                 </MenuItem>
@@ -232,8 +233,9 @@
                     <MenuItem Header="Отменить" InputGestureText="Ctrl+Z"/>
                     <MenuItem Header="Повторить" InputGestureText="Ctrl+Y"/>
                     <Separator/>
-                    <MenuItem Header="Выделить всё" InputGestureText="Ctrl+A"/>
-                    <MenuItem Header="Удалить" Click="DeleteSelected_Click"/>
+                    <MenuItem Header="Выделить всё" InputGestureText="Ctrl+A" Command="{Binding DataContext.SelectAllCommand, RelativeSource={RelativeSource AncestorType=Window}}"/>
+                    <MenuItem Header="Дублировать" InputGestureText="Ctrl+D" Command="{Binding DataContext.DuplicateSelectedCommand, RelativeSource={RelativeSource AncestorType=Window}}"/>
+                    <MenuItem Header="Удалить" Command="{Binding DataContext.DeleteSelectedCommand, RelativeSource={RelativeSource AncestorType=Window}}"/>
                 </MenuItem>
                 <MenuItem Header="Вид" Style="{StaticResource MenuItemStyle}">
                     <MenuItem Header="Перспектива" Click="MenuPerspective_Click"/>
@@ -245,6 +247,8 @@
                 </MenuItem>
                 <MenuItem Header="Объект" Style="{StaticResource MenuItemStyle}">
                     <MenuItem Header="Добавить примитив..." Click="AddPrimitive_Click"/>
+                    <Separator/>
+                    <MenuItem Header="Перемещение..." Click="ShowMoveMenu_Click"/>
                     <Separator/>
                     <MenuItem Header="Вращение X..." Click="RotateX_Click"/>
                     <MenuItem Header="Вращение Y..." Click="RotateY_Click"/>
@@ -262,14 +266,14 @@
 
                 <!-- File group -->
                 <StackPanel Orientation="Horizontal" Margin="0,0,4,0">
-                    <Button Style="{StaticResource ToolbarBtn}" Margin="0,0,3,0" Click="MenuNew_Click" ToolTip="Новый проект">
-                        <StackPanel Orientation="Horizontal"><TextBlock Text="🗋 " FontSize="13"/><TextBlock Text="Новый"/></StackPanel>
+                    <Button Style="{StaticResource ToolbarBtn}" Margin="0,0,3,0" Command="{Binding DataContext.NewProjectCommand, RelativeSource={RelativeSource AncestorType=Window}}" ToolTip="Новый проект">
+                        <StackPanel Orientation="Horizontal"><TextBlock Text="&#x1F5CB; " FontSize="13"/><TextBlock Text="Новый"/></StackPanel>
                     </Button>
-                    <Button Style="{StaticResource ToolbarBtn}" Margin="0,0,3,0" Click="MenuOpen_Click" ToolTip="Открыть">
-                        <StackPanel Orientation="Horizontal"><TextBlock Text="📂 " FontSize="13"/><TextBlock Text="Открыть"/></StackPanel>
+                    <Button Style="{StaticResource ToolbarBtn}" Margin="0,0,3,0" Command="{Binding DataContext.OpenProjectCommand, RelativeSource={RelativeSource AncestorType=Window}}" ToolTip="Открыть">
+                        <StackPanel Orientation="Horizontal"><TextBlock Text="&#x1F4C2; " FontSize="13"/><TextBlock Text="Открыть"/></StackPanel>
                     </Button>
-                    <Button Style="{StaticResource ToolbarBtn}" Margin="0,0,3,0" Click="MenuSave_Click" ToolTip="Сохранить">
-                        <StackPanel Orientation="Horizontal"><TextBlock Text="💾 " FontSize="13"/><TextBlock Text="Сохранить"/></StackPanel>
+                    <Button Style="{StaticResource ToolbarBtn}" Margin="0,0,3,0" Command="{Binding DataContext.SaveProjectCommand, RelativeSource={RelativeSource AncestorType=Window}}" ToolTip="Сохранить">
+                        <StackPanel Orientation="Horizontal"><TextBlock Text="&#x1F4BE; " FontSize="13"/><TextBlock Text="Сохранить"/></StackPanel>
                     </Button>
                 </StackPanel>
 
@@ -278,10 +282,20 @@
                 <!-- Add / Import -->
                 <StackPanel Orientation="Horizontal" Margin="4,0">
                     <Button Style="{StaticResource ToolbarBtnAccent}" Margin="0,0,3,0" Click="AddPrimitive_Click" ToolTip="Добавить примитив">
-                        <StackPanel Orientation="Horizontal"><TextBlock Text="✦ " FontSize="13"/><TextBlock Text="Примитив"/></StackPanel>
+                        <StackPanel Orientation="Horizontal"><TextBlock Text="&#x2726; " FontSize="13"/><TextBlock Text="Примитив"/></StackPanel>
                     </Button>
-                    <Button Style="{StaticResource ToolbarBtn}" Margin="0,0,3,0" Click="ImportModel_Click" ToolTip="Импорт модели">
-                        <StackPanel Orientation="Horizontal"><TextBlock Text="📥 " FontSize="13"/><TextBlock Text="Импорт"/></StackPanel>
+                    <Button Style="{StaticResource ToolbarBtn}" Margin="0,0,3,0" Command="{Binding DataContext.ImportModelCommand, RelativeSource={RelativeSource AncestorType=Window}}" ToolTip="Импорт модели">
+                        <StackPanel Orientation="Horizontal"><TextBlock Text="&#x1F4E5; " FontSize="13"/><TextBlock Text="Импорт"/></StackPanel>
+                    </Button>
+                </StackPanel>
+
+                <Separator Width="1" Background="#444" Margin="4,4"/>
+
+                <!-- Move -->
+                <StackPanel Orientation="Horizontal" Margin="4,0">
+                    <TextBlock Text="Перемещение:" Foreground="#888" FontSize="11" VerticalAlignment="Center" Margin="0,0,6,0"/>
+                    <Button Style="{StaticResource ToolbarBtn}" Margin="0,0,3,0" Click="ShowMoveMenu_Click" ToolTip="Перемещение по оси">
+                        <TextBlock Text="&#x2194; Сдвиг"/>
                     </Button>
                 </StackPanel>
 
@@ -306,11 +320,8 @@
                 <!-- Scale -->
                 <StackPanel Orientation="Horizontal" Margin="4,0">
                     <TextBlock Text="Масштаб:" Foreground="#888" FontSize="11" VerticalAlignment="Center" Margin="0,0,6,0"/>
-                    <Button Style="{StaticResource ToolbarBtn}" Margin="0,0,3,0" Click="ScaleUp_Click" ToolTip="Увеличить">
-                        <TextBlock Text="⤢ +"/>
-                    </Button>
-                    <Button Style="{StaticResource ToolbarBtn}" Margin="0,0,3,0" Click="ScaleDown_Click" ToolTip="Уменьшить">
-                        <TextBlock Text="⤡ −"/>
+                    <Button Style="{StaticResource ToolbarBtn}" Margin="0,0,3,0" Click="ShowScaleMenu_Click" ToolTip="Масштабирование">
+                        <TextBlock Text="&#x2922; Масштаб"/>
                     </Button>
                 </StackPanel>
 
@@ -320,18 +331,18 @@
                 <StackPanel Orientation="Horizontal" Margin="4,0">
                     <TextBlock Text="Вид:" Foreground="#888" FontSize="11" VerticalAlignment="Center" Margin="0,0,6,0"/>
                     <Button x:Name="BtnPerspective" Style="{StaticResource ToolbarBtn}" Margin="0,0,3,0" Click="MenuPerspective_Click" ToolTip="Перспектива">
-                        <TextBlock Text="⬚ Перспектива"/>
+                        <TextBlock Text="&#x2B1A; Перспектива"/>
                     </Button>
                     <Button x:Name="BtnWireframe" Style="{StaticResource ToolbarBtn}" Margin="0,0,3,0" Click="MenuWireframe_Click" ToolTip="Каркас">
-                        <TextBlock Text="◫ Каркас"/>
+                        <TextBlock Text="&#x25EB; Каркас"/>
                     </Button>
                 </StackPanel>
 
                 <Separator Width="1" Background="#444" Margin="4,4"/>
 
                 <!-- Delete -->
-                <Button Style="{StaticResource ToolbarBtnDanger}" Margin="4,0,0,0" Click="DeleteSelected_Click" ToolTip="Удалить выбранный объект">
-                    <StackPanel Orientation="Horizontal"><TextBlock Text="🗑 " FontSize="13"/><TextBlock Text="Удалить"/></StackPanel>
+                <Button Style="{StaticResource ToolbarBtnDanger}" Margin="4,0,0,0" Command="{Binding DataContext.DeleteSelectedCommand, RelativeSource={RelativeSource AncestorType=Window}}" ToolTip="Удалить выбранный объект">
+                    <StackPanel Orientation="Horizontal"><TextBlock Text="&#x1F5D1; " FontSize="13"/><TextBlock Text="Удалить"/></StackPanel>
                 </Button>
             </StackPanel>
         </Border>
@@ -367,6 +378,7 @@
                     <ListBox x:Name="SceneTreeList" Grid.Row="1"
                              Background="Transparent" BorderThickness="0"
                              ItemContainerStyle="{StaticResource SceneTreeItem}"
+                             SelectionMode="Extended"
                              SelectionChanged="SceneTree_SelectionChanged"
                              VirtualizingPanel.ScrollUnit="Pixel"
                              Padding="0,4">
@@ -411,6 +423,10 @@
                                     ShowFrameRate="False"
                                     ShowCameraInfo="False"
                                     IsInertiaEnabled="True"
+                                    Focusable="True"
+                                    PreviewMouseLeftButtonDown="Viewport3D_PreviewMouseLeftButtonDown"
+                                    PreviewMouseLeftButtonUp="Viewport3D_PreviewMouseLeftButtonUp"
+                                    PreviewMouseMove="Viewport3D_PreviewMouseMove"
                                     ZoomExtentsWhenLoaded="True">
                     <hx:DefaultLights/>
                 </hx:HelixViewport3D>
@@ -426,10 +442,129 @@
                     <Button Width="26" Height="26" Margin="0,0,0,3" ToolTip="Приблизить"
                             Style="{StaticResource ToolbarBtn}" FontSize="14">+</Button>
                     <Button Width="26" Height="26" Margin="0,0,0,3" ToolTip="Отдалить"
-                            Style="{StaticResource ToolbarBtn}" FontSize="14">−</Button>
+                            Style="{StaticResource ToolbarBtn}" FontSize="14">&#x2212;</Button>
                     <Button Width="26" Height="26" Margin="0,0,0,3" ToolTip="Сбросить вид"
-                            Style="{StaticResource ToolbarBtn}" Click="ResetCamera_Click" FontSize="13">⌂</Button>
+                            Style="{StaticResource ToolbarBtn}" Click="ResetCamera_Click" FontSize="13">&#x2302;</Button>
                 </StackPanel>
+
+                <Popup x:Name="MoveMenuPopup"
+                       PlacementTarget="{Binding ElementName=Viewport3D}"
+                       Placement="Relative"
+                       StaysOpen="False"
+                       AllowsTransparency="True">
+                    <Border Background="#262626" BorderBrush="#555555" BorderThickness="1"
+                            CornerRadius="4" Padding="10" Width="210">
+                        <StackPanel>
+                            <TextBlock Text="Перемещение" Foreground="#CCCCCC" FontSize="12" FontWeight="Bold" Margin="0,0,0,8"/>
+                            <Grid Margin="0,0,0,8">
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="85"/>
+                                    <ColumnDefinition Width="*"/>
+                                </Grid.ColumnDefinitions>
+                                <TextBlock Grid.Column="0" Text="Расст." Foreground="#888888" FontSize="11" VerticalAlignment="Center"/>
+                                <TextBox Grid.Column="1" x:Name="MoveDistanceBox" Style="{StaticResource PropField}"
+                                         Text="1" PreviewKeyDown="MoveDistanceBox_PreviewKeyDown"/>
+                            </Grid>
+                            <StackPanel Orientation="Horizontal" HorizontalAlignment="Right">
+                                <Button Style="{StaticResource ToolbarBtn}" Width="42" Margin="0,0,4,0"
+                                        Tag="X" Click="MoveContextAxis_Click"
+                                        ToolTip="Переместить по X">
+                                    <TextBlock Foreground="#E07070" FontWeight="Bold" Text="X"/>
+                                </Button>
+                                <Button Style="{StaticResource ToolbarBtn}" Width="42" Margin="0,0,4,0"
+                                        Tag="Y" Click="MoveContextAxis_Click"
+                                        ToolTip="Переместить по Y">
+                                    <TextBlock Foreground="#70C070" FontWeight="Bold" Text="Y"/>
+                                </Button>
+                                <Button Style="{StaticResource ToolbarBtn}" Width="42"
+                                        Tag="Z" Click="MoveContextAxis_Click"
+                                        ToolTip="Переместить по Z">
+                                    <TextBlock Foreground="#7090E0" FontWeight="Bold" Text="Z"/>
+                                </Button>
+                            </StackPanel>
+                        </StackPanel>
+                    </Border>
+                </Popup>
+
+                <Popup x:Name="RotateMenuPopup"
+                       PlacementTarget="{Binding ElementName=Viewport3D}"
+                       Placement="Relative"
+                       StaysOpen="False"
+                       AllowsTransparency="True">
+                    <Border Background="#262626" BorderBrush="#555555" BorderThickness="1"
+                            CornerRadius="4" Padding="10" Width="190">
+                        <StackPanel>
+                            <TextBlock Text="Поворот" Foreground="#CCCCCC" FontSize="12" FontWeight="Bold" Margin="0,0,0,8"/>
+                            <Grid Margin="0,0,0,8">
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="55"/>
+                                    <ColumnDefinition Width="*"/>
+                                </Grid.ColumnDefinitions>
+                                <TextBlock Grid.Column="0" Text="Угол" Foreground="#888888" FontSize="11" VerticalAlignment="Center"/>
+                                <TextBox Grid.Column="1" x:Name="RotateAngleBox" Style="{StaticResource PropField}"
+                                         Text="45" PreviewKeyDown="RotateAngleBox_PreviewKeyDown"/>
+                            </Grid>
+                            <StackPanel Orientation="Horizontal" HorizontalAlignment="Right">
+                                <Button Style="{StaticResource ToolbarBtn}" Width="42" Margin="0,0,4,0"
+                                        Tag="X" Click="RotateContextAxis_Click">
+                                    <TextBlock Foreground="#E07070" FontWeight="Bold" Text="X"/>
+                                </Button>
+                                <Button Style="{StaticResource ToolbarBtn}" Width="42" Margin="0,0,4,0"
+                                        Tag="Y" Click="RotateContextAxis_Click">
+                                    <TextBlock Foreground="#70C070" FontWeight="Bold" Text="Y"/>
+                                </Button>
+                                <Button Style="{StaticResource ToolbarBtn}" Width="42"
+                                        Tag="Z" Click="RotateContextAxis_Click">
+                                    <TextBlock Foreground="#7090E0" FontWeight="Bold" Text="Z"/>
+                                </Button>
+                            </StackPanel>
+                        </StackPanel>
+                    </Border>
+                </Popup>
+
+                <Popup x:Name="ScaleMenuPopup"
+                       PlacementTarget="{Binding ElementName=Viewport3D}"
+                       Placement="Relative"
+                       StaysOpen="False"
+                       AllowsTransparency="True">
+                    <Border Background="#262626" BorderBrush="#555555" BorderThickness="1"
+                            CornerRadius="4" Padding="10" Width="210">
+                        <StackPanel>
+                            <TextBlock Text="Масштаб" Foreground="#CCCCCC" FontSize="12" FontWeight="Bold" Margin="0,0,0,8"/>
+                            <Grid Margin="0,0,0,8">
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="85"/>
+                                    <ColumnDefinition Width="*"/>
+                                </Grid.ColumnDefinitions>
+                                <TextBlock Grid.Column="0" Text="Коэфф." Foreground="#888888" FontSize="11" VerticalAlignment="Center"/>
+                                <TextBox Grid.Column="1" x:Name="ScaleFactorBox" Style="{StaticResource PropField}"
+                                         Text="1.25" PreviewKeyDown="ScaleFactorBox_PreviewKeyDown"/>
+                            </Grid>
+                            <StackPanel Orientation="Horizontal" HorizontalAlignment="Right">
+                                <Button Style="{StaticResource ToolbarBtn}" Width="42" Margin="0,0,4,0"
+                                        Tag="X" Click="ScaleContextAxis_Click"
+                                        ToolTip="Масштабировать по X">
+                                    <TextBlock Foreground="#E07070" FontWeight="Bold" Text="X"/>
+                                </Button>
+                                <Button Style="{StaticResource ToolbarBtn}" Width="42" Margin="0,0,4,0"
+                                        Tag="Y" Click="ScaleContextAxis_Click"
+                                        ToolTip="Масштабировать по Y">
+                                    <TextBlock Foreground="#70C070" FontWeight="Bold" Text="Y"/>
+                                </Button>
+                                <Button Style="{StaticResource ToolbarBtn}" Width="42" Margin="0,0,4,0"
+                                        Tag="Z" Click="ScaleContextAxis_Click"
+                                        ToolTip="Масштабировать по Z">
+                                    <TextBlock Foreground="#7090E0" FontWeight="Bold" Text="Z"/>
+                                </Button>
+                                <Button Style="{StaticResource ToolbarBtnAccent}" Width="58"
+                                        Click="ApplyScaleMenu_Click"
+                                        ToolTip="Масштабировать по всем осям">
+                                    <TextBlock Text="Все"/>
+                                </Button>
+                            </StackPanel>
+                        </StackPanel>
+                    </Border>
+                </Popup>
 
                 <!-- No object hint -->
                 <TextBlock x:Name="EmptyHint" Text="Нажмите «Примитив» чтобы добавить объект в сцену"
@@ -482,9 +617,9 @@
                                 <Grid.ColumnDefinitions>
                                     <ColumnDefinition/><ColumnDefinition/><ColumnDefinition/>
                                 </Grid.ColumnDefinitions>
-                                <TextBox Grid.Column="0" x:Name="PosXBox" Style="{StaticResource XyzField}" Margin="0,0,2,0" IsReadOnly="True" Text="0.00"/>
-                                <TextBox Grid.Column="1" x:Name="PosYBox" Style="{StaticResource XyzField}" Margin="2,0,2,0" IsReadOnly="True" Text="0.00"/>
-                                <TextBox Grid.Column="2" x:Name="PosZBox" Style="{StaticResource XyzField}" Margin="2,0,0,0" IsReadOnly="True" Text="0.00"/>
+                                <TextBox Grid.Column="0" x:Name="PosXBox" Style="{StaticResource XyzField}" Margin="0,0,2,0" LostFocus="TransformField_LostFocus" PreviewKeyDown="TransformField_PreviewKeyDown" Text="0.00"/>
+                                <TextBox Grid.Column="1" x:Name="PosYBox" Style="{StaticResource XyzField}" Margin="2,0,2,0" LostFocus="TransformField_LostFocus" PreviewKeyDown="TransformField_PreviewKeyDown" Text="0.00"/>
+                                <TextBox Grid.Column="2" x:Name="PosZBox" Style="{StaticResource XyzField}" Margin="2,0,0,0" LostFocus="TransformField_LostFocus" PreviewKeyDown="TransformField_PreviewKeyDown" Text="0.00"/>
                             </Grid>
 
                             <!-- Rotation -->
@@ -501,9 +636,9 @@
                                 <Grid.ColumnDefinitions>
                                     <ColumnDefinition/><ColumnDefinition/><ColumnDefinition/>
                                 </Grid.ColumnDefinitions>
-                                <TextBox Grid.Column="0" x:Name="RotXBox" Style="{StaticResource XyzField}" Margin="0,0,2,0" IsReadOnly="True" Text="0°"/>
-                                <TextBox Grid.Column="1" x:Name="RotYBox" Style="{StaticResource XyzField}" Margin="2,0,2,0" IsReadOnly="True" Text="0°"/>
-                                <TextBox Grid.Column="2" x:Name="RotZBox" Style="{StaticResource XyzField}" Margin="2,0,0,0" IsReadOnly="True" Text="0°"/>
+                                <TextBox Grid.Column="0" x:Name="RotXBox" Style="{StaticResource XyzField}" Margin="0,0,2,0" LostFocus="TransformField_LostFocus" PreviewKeyDown="TransformField_PreviewKeyDown" Text="0°"/>
+                                <TextBox Grid.Column="1" x:Name="RotYBox" Style="{StaticResource XyzField}" Margin="2,0,2,0" LostFocus="TransformField_LostFocus" PreviewKeyDown="TransformField_PreviewKeyDown" Text="0°"/>
+                                <TextBox Grid.Column="2" x:Name="RotZBox" Style="{StaticResource XyzField}" Margin="2,0,0,0" LostFocus="TransformField_LostFocus" PreviewKeyDown="TransformField_PreviewKeyDown" Text="0°"/>
                             </Grid>
 
                             <!-- Scale -->
@@ -520,9 +655,9 @@
                                 <Grid.ColumnDefinitions>
                                     <ColumnDefinition/><ColumnDefinition/><ColumnDefinition/>
                                 </Grid.ColumnDefinitions>
-                                <TextBox Grid.Column="0" x:Name="ScaleXBox" Style="{StaticResource XyzField}" Margin="0,0,2,0" IsReadOnly="True" Text="1.00"/>
-                                <TextBox Grid.Column="1" x:Name="ScaleYBox" Style="{StaticResource XyzField}" Margin="2,0,2,0" IsReadOnly="True" Text="1.00"/>
-                                <TextBox Grid.Column="2" x:Name="ScaleZBox" Style="{StaticResource XyzField}" Margin="2,0,0,0" IsReadOnly="True" Text="1.00"/>
+                                <TextBox Grid.Column="0" x:Name="ScaleXBox" Style="{StaticResource XyzField}" Margin="0,0,2,0" LostFocus="TransformField_LostFocus" PreviewKeyDown="TransformField_PreviewKeyDown" Text="1.00"/>
+                                <TextBox Grid.Column="1" x:Name="ScaleYBox" Style="{StaticResource XyzField}" Margin="2,0,2,0" LostFocus="TransformField_LostFocus" PreviewKeyDown="TransformField_PreviewKeyDown" Text="1.00"/>
+                                <TextBox Grid.Column="2" x:Name="ScaleZBox" Style="{StaticResource XyzField}" Margin="2,0,0,0" LostFocus="TransformField_LostFocus" PreviewKeyDown="TransformField_PreviewKeyDown" Text="1.00"/>
                             </Grid>
                         </StackPanel>
 
@@ -588,7 +723,7 @@
                             <!-- Clear texture -->
                             <Button Style="{StaticResource ToolbarBtn}" Margin="0,0,0,4"
                                     Click="ClearTexture_Click" FontSize="10">
-                                <TextBlock Text="✕ Убрать текстуру" FontSize="10"/>
+                                <TextBlock Text="&#x2715; Убрать текстуру" FontSize="10"/>
                             </Button>
 
                             <!-- Apply button -->
@@ -627,3 +762,4 @@
         </Border>
     </Grid>
 </Window>
+

@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Globalization;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Media;
@@ -96,52 +97,52 @@ namespace ModelingAppWPF
             try
             {
                 
-                PosX = double.Parse(PosXTextBox.Text);
-                PosY = double.Parse(PosYTextBox.Text);
-                PosZ = double.Parse(PosZTextBox.Text);
+                PosX = ParseDouble(PosXTextBox.Text);
+                PosY = ParseDouble(PosYTextBox.Text);
+                PosZ = ParseDouble(PosZTextBox.Text);
 
                
                 switch (PrimitiveType)
                 {
                     case "Cube":
-                        CubeSide = double.Parse(CubeSideTextBox.Text);
+                        CubeSide = ParseDouble(CubeSideTextBox.Text);
                         break;
                     case "Sphere":
-                        SphereRadius = double.Parse(SphereRadiusTextBox.Text);
+                        SphereRadius = ParseDouble(SphereRadiusTextBox.Text);
                         break;
                     case "Cylinder":
-                        CylinderDiameter = double.Parse(CylinderDiameterTextBox.Text);
-                        CylinderHeight = double.Parse(CylinderHeightTextBox.Text);
+                        CylinderDiameter = ParseDouble(CylinderDiameterTextBox.Text);
+                        CylinderHeight = ParseDouble(CylinderHeightTextBox.Text);
                         break;
                     case "Cone":
-                        ConeBaseRadius = double.Parse(ConeBaseRadiusTextBox.Text);
-                        ConeTopRadius = double.Parse(ConeTopRadiusTextBox.Text);
-                        ConeHeight = double.Parse(ConeHeightTextBox.Text);
+                        ConeBaseRadius = ParseDouble(ConeBaseRadiusTextBox.Text);
+                        ConeTopRadius = ParseDouble(ConeTopRadiusTextBox.Text);
+                        ConeHeight = ParseDouble(ConeHeightTextBox.Text);
                         break;
                     case "Torus":
-                        TorusDiameter = double.Parse(TorusDiameterTextBox.Text);
-                        TorusTubeDiameter = double.Parse(TorusTubeDiameterTextBox.Text);
+                        TorusDiameter = ParseDouble(TorusDiameterTextBox.Text);
+                        TorusTubeDiameter = ParseDouble(TorusTubeDiameterTextBox.Text);
                         break;
                     case "Pyramid":
-                        PyramidSide = double.Parse(PyramidSideTextBox.Text);
-                        PyramidHeight = double.Parse(PyramidHeightTextBox.Text);
+                        PyramidSide = ParseDouble(PyramidSideTextBox.Text);
+                        PyramidHeight = ParseDouble(PyramidHeightTextBox.Text);
                         break;
                     case "Ellipsoid":
-                        EllipsoidRadiusX = double.Parse(EllipsoidRadiusXTextBox.Text);
-                        EllipsoidRadiusY = double.Parse(EllipsoidRadiusYTextBox.Text);
-                        EllipsoidRadiusZ = double.Parse(EllipsoidRadiusZTextBox.Text);
+                        EllipsoidRadiusX = ParseDouble(EllipsoidRadiusXTextBox.Text);
+                        EllipsoidRadiusY = ParseDouble(EllipsoidRadiusYTextBox.Text);
+                        EllipsoidRadiusZ = ParseDouble(EllipsoidRadiusZTextBox.Text);
                         break;
                     case "Pipe":
-                        PipeOuterDiameter = double.Parse(PipeOuterDiameterTextBox.Text);
-                        PipeInnerDiameter = double.Parse(PipeInnerDiameterTextBox.Text);
-                        PipeLength = double.Parse(PipeLengthTextBox.Text);
+                        PipeOuterDiameter = ParseDouble(PipeOuterDiameterTextBox.Text);
+                        PipeInnerDiameter = ParseDouble(PipeInnerDiameterTextBox.Text);
+                        PipeLength = ParseDouble(PipeLengthTextBox.Text);
                         break;
                 }
 
                 
                 if (ColorComboBox.SelectedItem is ComboBoxItem colorItem)
                 {
-                    string colorTag = colorItem.Tag?.ToString();
+                    string? colorTag = colorItem.Tag?.ToString();
                     SelectedColor = GetColorFromTag(colorTag);
                 }
 
@@ -155,7 +156,14 @@ namespace ModelingAppWPF
             }
         }
 
-        private Color GetColorFromTag(string tag)
+        private static double ParseDouble(string text)
+        {
+            if (double.TryParse(text, NumberStyles.Float, CultureInfo.CurrentCulture, out double value))
+                return value;
+
+            return double.Parse(text.Replace(',', '.'), NumberStyles.Float, CultureInfo.InvariantCulture);
+        }
+        private Color GetColorFromTag(string? tag)
         {
             return tag switch
             {
@@ -180,3 +188,4 @@ namespace ModelingAppWPF
         }
     }
 }
+

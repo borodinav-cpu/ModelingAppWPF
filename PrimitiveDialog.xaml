@@ -87,7 +87,7 @@
                             <TextBlock Grid.Row="1" Grid.Column="0" Text="Y:" 
                                        Foreground="White" Margin="0,2,10,2" Width="20"/>
                             <TextBox Grid.Row="1" Grid.Column="1" x:Name="PosYTextBox" 
-                                     Text="10" Background="#2B2B2B" Foreground="White" 
+                                     Text="0" Background="#2B2B2B" Foreground="White" 
                                      BorderBrush="#555555" Margin="2" Padding="3"/>
 
                             <TextBlock Grid.Row="2" Grid.Column="0" Text="Z:" 
@@ -116,7 +116,7 @@
                                 <TextBlock Grid.Row="0" Grid.Column="0" Text="Длина стороны:" 
                                            Foreground="White" Margin="0,2,10,2"/>
                                 <TextBox Grid.Row="0" Grid.Column="1" x:Name="CubeSideTextBox" 
-                                         Text="20" Background="#2B2B2B" Foreground="White" 
+                                         Text="2" Background="#2B2B2B" Foreground="White" 
                                          BorderBrush="#555555" Margin="2" Padding="3"/>
                             </Grid>
 
@@ -129,7 +129,7 @@
                                 <TextBlock Grid.Column="0" Text="Радиус:" 
                                            Foreground="White" Margin="0,2,10,2"/>
                                 <TextBox Grid.Column="1" x:Name="SphereRadiusTextBox" 
-                                         Text="10" Background="#2B2B2B" Foreground="White" 
+                                         Text="1" Background="#2B2B2B" Foreground="White" 
                                          BorderBrush="#555555" Margin="2" Padding="3"/>
                             </Grid>
 
@@ -147,13 +147,13 @@
                                 <TextBlock Grid.Row="0" Grid.Column="0" Text="Диаметр:" 
                                            Foreground="White" Margin="0,2,10,2"/>
                                 <TextBox Grid.Row="0" Grid.Column="1" x:Name="CylinderDiameterTextBox" 
-                                         Text="16" Background="#2B2B2B" Foreground="White" 
+                                         Text="1.6" Background="#2B2B2B" Foreground="White" 
                                          BorderBrush="#555555" Margin="2" Padding="3"/>
 
                                 <TextBlock Grid.Row="1" Grid.Column="0" Text="Высота:" 
                                            Foreground="White" Margin="0,2,10,2"/>
                                 <TextBox Grid.Row="1" Grid.Column="1" x:Name="CylinderHeightTextBox" 
-                                         Text="20" Background="#2B2B2B" Foreground="White" 
+                                         Text="2" Background="#2B2B2B" Foreground="White" 
                                          BorderBrush="#555555" Margin="2" Padding="3"/>
                             </Grid>
 
@@ -172,13 +172,13 @@
                                 <TextBlock Grid.Row="0" Grid.Column="0" Text="Радиус основания:" 
                                            Foreground="White" Margin="0,2,10,2"/>
                                 <TextBox Grid.Row="0" Grid.Column="1" x:Name="ConeBaseRadiusTextBox" 
-                                         Text="10" Background="#2B2B2B" Foreground="White" 
+                                         Text="1" Background="#2B2B2B" Foreground="White" 
                                          BorderBrush="#555555" Margin="2" Padding="3"/>
 
                                 <TextBlock Grid.Row="1" Grid.Column="0" Text="Высота:" 
                                            Foreground="White" Margin="0,2,10,2"/>
                                 <TextBox Grid.Row="1" Grid.Column="1" x:Name="ConeHeightTextBox" 
-                                         Text="20" Background="#2B2B2B" Foreground="White" 
+                                         Text="2" Background="#2B2B2B" Foreground="White" 
                                          BorderBrush="#555555" Margin="2" Padding="3"/>
 
                                 <TextBlock Grid.Row="2" Grid.Column="0" Text="Радиус вершины:" 
@@ -202,13 +202,13 @@
                                 <TextBlock Grid.Row="0" Grid.Column="0" Text="Диаметр тора:" 
                                            Foreground="White" Margin="0,2,10,2"/>
                                 <TextBox Grid.Row="0" Grid.Column="1" x:Name="TorusDiameterTextBox" 
-                                         Text="30" Background="#2B2B2B" Foreground="White" 
+                                         Text="3" Background="#2B2B2B" Foreground="White" 
                                          BorderBrush="#555555" Margin="2" Padding="3"/>
 
                                 <TextBlock Grid.Row="1" Grid.Column="0" Text="Толщина трубы:" 
                                            Foreground="White" Margin="0,2,10,2"/>
                                 <TextBox Grid.Row="1" Grid.Column="1" x:Name="TorusTubeDiameterTextBox" 
-                                         Text="8" Background="#2B2B2B" Foreground="White" 
+                                         Text="0.8" Background="#2B2B2B" Foreground="White" 
                                          BorderBrush="#555555" Margin="2" Padding="3"/>
                             </Grid>
 
@@ -226,13 +226,13 @@
                                 <TextBlock Grid.Row="0" Grid.Column="0" Text="Длина стороны:" 
                                            Foreground="White" Margin="0,2,10,2"/>
                                 <TextBox Grid.Row="0" Grid.Column="1" x:Name="PyramidSideTextBox" 
-                                         Text="20" Background="#2B2B2B" Foreground="White" 
+                                         Text="2" Background="#2B2B2B" Foreground="White" 
                                          BorderBrush="#555555" Margin="2" Padding="3"/>
 
                                 <TextBlock Grid.Row="1" Grid.Column="0" Text="Высота:" 
                                            Foreground="White" Margin="0,2,10,2"/>
                                 <TextBox Grid.Row="1" Grid.Column="1" x:Name="PyramidHeightTextBox" 
-                                         Text="25" Background="#2B2B2B" Foreground="White" 
+                                         Text="2.5" Background="#2B2B2B" Foreground="White" 
                                          BorderBrush="#555555" Margin="2" Padding="3"/>
                             </Grid>
 
@@ -251,19 +251,19 @@
                                 <TextBlock Grid.Row="0" Grid.Column="0" Text="Радиус X:" 
                                            Foreground="White" Margin="0,2,10,2"/>
                                 <TextBox Grid.Row="0" Grid.Column="1" x:Name="EllipsoidRadiusXTextBox" 
-                                         Text="15" Background="#2B2B2B" Foreground="White" 
+                                         Text="1.5" Background="#2B2B2B" Foreground="White" 
                                          BorderBrush="#555555" Margin="2" Padding="3"/>
 
                                 <TextBlock Grid.Row="1" Grid.Column="0" Text="Радиус Y:" 
                                            Foreground="White" Margin="0,2,10,2"/>
                                 <TextBox Grid.Row="1" Grid.Column="1" x:Name="EllipsoidRadiusYTextBox" 
-                                         Text="10" Background="#2B2B2B" Foreground="White" 
+                                         Text="1" Background="#2B2B2B" Foreground="White" 
                                          BorderBrush="#555555" Margin="2" Padding="3"/>
 
                                 <TextBlock Grid.Row="2" Grid.Column="0" Text="Радиус Z:" 
                                            Foreground="White" Margin="0,2,10,2"/>
                                 <TextBox Grid.Row="2" Grid.Column="1" x:Name="EllipsoidRadiusZTextBox" 
-                                         Text="10" Background="#2B2B2B" Foreground="White" 
+                                         Text="1" Background="#2B2B2B" Foreground="White" 
                                          BorderBrush="#555555" Margin="2" Padding="3"/>
                             </Grid>
 
@@ -282,19 +282,19 @@
                                 <TextBlock Grid.Row="0" Grid.Column="0" Text="Внешний диаметр:" 
                                            Foreground="White" Margin="0,2,10,2"/>
                                 <TextBox Grid.Row="0" Grid.Column="1" x:Name="PipeOuterDiameterTextBox" 
-                                         Text="16" Background="#2B2B2B" Foreground="White" 
+                                         Text="1.6" Background="#2B2B2B" Foreground="White" 
                                          BorderBrush="#555555" Margin="2" Padding="3"/>
 
                                 <TextBlock Grid.Row="1" Grid.Column="0" Text="Внутренний диаметр:" 
                                            Foreground="White" Margin="0,2,10,2"/>
                                 <TextBox Grid.Row="1" Grid.Column="1" x:Name="PipeInnerDiameterTextBox" 
-                                         Text="12" Background="#2B2B2B" Foreground="White" 
+                                         Text="1.2" Background="#2B2B2B" Foreground="White" 
                                          BorderBrush="#555555" Margin="2" Padding="3"/>
 
                                 <TextBlock Grid.Row="2" Grid.Column="0" Text="Длина:" 
                                            Foreground="White" Margin="0,2,10,2"/>
                                 <TextBox Grid.Row="2" Grid.Column="1" x:Name="PipeLengthTextBox" 
-                                         Text="30" Background="#2B2B2B" Foreground="White" 
+                                         Text="3" Background="#2B2B2B" Foreground="White" 
                                          BorderBrush="#555555" Margin="2" Padding="3"/>
                             </Grid>
                         </StackPanel>
@@ -350,3 +350,4 @@
         </StackPanel>
     </Grid>
 </Window>
+
